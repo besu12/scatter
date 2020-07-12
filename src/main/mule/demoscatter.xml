@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="demoscatterFlow" doc:id="aa1df2ea-2be2-4a40-8241-67f9426d53af" >
+		<http:listener doc:name="Listener" doc:id="b786c3ef-1314-4eac-935a-68a3b15ded8c" path="/scat" config-ref="HTTP_Listener_config1"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="3770c25f-121f-4ef5-8393-033f357ad3f3" >
+			<route >
+				<flow-ref doc:name="Flow Reference" doc:id="6f7e3cfd-d7a2-4d68-8fbc-32223d9a6f71" name="demoscatterFlow1"/>
+			</route>
+			<route >
+				<flow-ref doc:name="Flow Reference" doc:id="db70d2a4-3ac6-47d0-928b-97524381d8db" name="demoscatterFlow3"/>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Transform Message" doc:id="2185e35c-484c-4fda-a949-19b0d3e7c042" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten (payload..payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="demoscatterFlow3" doc:id="6606276f-b06e-44fd-84d1-dfc8b7d6b150" >
+		<http:request method="GET" doc:name="Request" doc:id="6199fe3a-67f8-4145-9e7a-08c6b5dfa3c7" path="/united/flights" config-ref="HTTP_Request_configuration"/>
+	</flow>
+	<flow name="demoscatterFlow2" doc:id="dde045ac-cf55-48c7-9a2a-27155914d286" >
+		<ee:transform doc:name="Transform Message" doc:id="57226cc4-bd96-4020-8c75-e51462c4d1f9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.training.mulesoft.com/
+---
+{
+	ns0#listAllFlights: null
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume doc:name="Consume" doc:id="9bc46e7e-4cef-4d28-a5d2-3ff34c7e5ddf" config-ref="Web_Service_Consumer_Config1" operation="listAllFlights"/>
+	</flow>
+	<flow name="demoscatterFlow1" doc:id="3caa9d07-3dfb-4993-93f9-1b77cca5d28d" >
+		<db:select doc:name="Select" doc:id="0f94e582-098a-4d2d-b778-88ebea830d23" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from american ]]></db:sql>
+		</db:select>
+	</flow>
+</mule>

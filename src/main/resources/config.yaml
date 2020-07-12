@@ -1,0 +1,17 @@
+http:
+  port: "8085"
+
+db:
+  host: "mudb.learn.mulesoft.com"
+  port: "3306"
+  user: "mule"
+  password: "mule"
+  database: "training"
+delta:
+  location: "http://mu.learn.mulesoft.com/delta?wsdl"
+  service: "TicketServiceService"
+  port: "TicketServicePort"
+  address: "http://mu.learn.mulesoft.com/delta"
+HTTP_Request:
+  host: "mu.learn.mulesoft.com"
+  port: "80"
