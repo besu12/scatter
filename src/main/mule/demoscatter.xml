@@ -16,6 +16,9 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<route >
 				<flow-ref doc:name="Flow Reference" doc:id="db70d2a4-3ac6-47d0-928b-97524381d8db" name="demoscatterFlow3"/>
 			</route>
+			<route >
+				<flow-ref doc:name="Flow Reference" doc:id="1b4ab068-8068-4c8f-abc4-57cad27cf6e5" name="demoscatterFlow2"/>
+			</route>
 		</scatter-gather>
 		<ee:transform doc:name="Transform Message" doc:id="2185e35c-484c-4fda-a949-19b0d3e7c042" >
 			<ee:message >
